@@ -1,0 +1,48 @@
+services:
+  perf-runner:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: k6-playwright-performance-capture:stage-9
+    working_dir: /app
+    environment:
+      CI: "true"
+      TEST_CONFIG_PATH: /app/config/test-config.json
+      THRESHOLDS_CONFIG_PATH: /app/config/thresholds.json
+      RESULTS_DIR: /app/results
+    volumes:
+      - ./config:/app/config:ro
+      - ./results:/app/results
+    command: npm run test:perf
+
+  perf-runner-no-k6:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: k6-playwright-performance-capture:stage-9
+    profiles: ["tools"]
+    working_dir: /app
+    environment:
+      CI: "true"
+      TEST_CONFIG_PATH: /app/config/test-config.json
+      THRESHOLDS_CONFIG_PATH: /app/config/thresholds.json
+      RESULTS_DIR: /app/results
+    volumes:
+      - ./config:/app/config:ro
+      - ./results:/app/results
+    command: npm run test:perf:no-k6
+
+  validate-config:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: k6-playwright-performance-capture:stage-9
+    profiles: ["tools"]
+    working_dir: /app
+    environment:
+      CI: "true"
+      TEST_CONFIG_PATH: /app/config/test-config.json
+      THRESHOLDS_CONFIG_PATH: /app/config/thresholds.json
+    volumes:
+      - ./config:/app/config:ro
+    command: npm run validate:config

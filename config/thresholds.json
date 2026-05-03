@@ -1,0 +1,23 @@
+{
+  "pageThresholds": {
+    "default": {
+      "totalVisitMs": 3000,
+      "domContentLoadedMs": 1500,
+      "loadEventMs": 2500,
+      "failedRequestCount": 0,
+      "consoleErrorCount": 0
+    },
+    "pages": {
+      "home": {
+        "totalVisitMs": 2000,
+        "largestContentfulPaintMs": 1800
+      },
+      "checkout": {
+        "totalVisitMs": 4000,
+        "domContentLoadedMs": 2000,
+        "loadEventMs": 3500,
+        "failedRequestCount": 0
+      }
+    }
+  }
+}

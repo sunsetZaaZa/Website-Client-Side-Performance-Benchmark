@@ -1,0 +1,59 @@
+{
+  "baseUrl": "https://example.com",
+  "load": {
+    "vus": 25,
+    "duration": "2m",
+    "warmupMs": 10000
+  },
+  "browser": {
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "fullPageScreenshot": true,
+    "waitUntil": "load"
+  },
+  "pages": {
+    "home": {
+      "path": "/",
+      "capture": true
+    },
+    "pricing": {
+      "path": "/pricing",
+      "capture": true
+    },
+    "checkout": {
+      "path": "/checkout",
+      "capture": true
+    },
+    "contactSales": {
+      "path": "/contact-sales",
+      "capture": true
+    },
+    "docs": {
+      "path": "/docs",
+      "capture": true
+    },
+    "gettingStarted": {
+      "path": "/docs/getting-started",
+      "capture": true
+    }
+  },
+  "flows": [
+    {
+      "name": "primary-checkout-path",
+      "label": "Home → Pricing → Checkout",
+      "steps": ["home", "pricing", "checkout"]
+    },
+    {
+      "name": "secondary-sales-path",
+      "label": "Home → Pricing → Contact Sales",
+      "steps": ["home", "pricing", "contactSales"]
+    },
+    {
+      "name": "docs-path",
+      "label": "Home → Docs → Getting Started",
+      "steps": ["home", "docs", "gettingStarted"]
+    }
+  ]
+}
