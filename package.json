@@ -12,6 +12,8 @@
     "test:perf": "npm run build:k6 && ts-node src/orchestrator/run-test.ts",
     "report": "ts-node src/reporting/report-generator.ts",
     "clean": "rimraf dist results/run-*",
+    "verify:deps": "node scripts/check-local-bins.cjs",
+    "ci:install": "node scripts/ci-install.cjs && npm run verify:deps",
     "validate:config": "ts-node src/tools/validate-config.ts",
     "k6:run": "node -e \"require('fs').mkdirSync('./results',{recursive:true})\" && npm run build:k6 && k6 run -e TEST_CONFIG_PATH=./config/test-config.json -e K6_SUMMARY_PATH=./results/k6-summary.json dist/k6/load-test.js",
     "k6:inspect": "npm run build:k6 && node -e \"console.log(require('fs').readFileSync('dist/k6/load-test.js','utf8').slice(0,1200))\"",
@@ -26,7 +28,7 @@
     "docker:run": "docker compose run --build --rm perf-runner",
     "docker:run:no-k6": "docker compose --profile tools run --build --rm perf-runner-no-k6",
     "docker:validate": "docker compose --profile tools run --build --rm validate-config",
-    "ci:verify": "npm run validate:config && npm run typecheck && npm test && npm run build:k6",
+    "ci:verify": "node scripts/ci-verify.cjs",
     "ci:perf": "npm run test:perf",
     "ci:perf:docker": "docker compose run --build --rm perf-runner",
     "ci:perf:docker:build": "docker compose build perf-runner"
@@ -45,5 +47,10 @@
     "rimraf": "^5.0.7",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.5"
+  },
+  "packageManager": "npm@10.9.2",
+  "engines": {
+    "node": ">=20 <23",
+    "npm": ">=10.9.2 <11"
   }
 }

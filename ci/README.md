@@ -78,6 +78,22 @@ k6-bundle
 performance-results
 ```
 
+
+## Dependency Install Hardening
+
+The validation lanes pin the npm CLI and run `npm run ci:install` instead of a bare `npm ci`. This wrapper sets `PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1`, installs from the lockfile, and verifies that the expected local binaries exist afterward.
+
+This is intentional for CI validation because the validation job only needs TypeScript, tests, and the k6 bundle. Browser binaries are supplied by the Docker performance image for full performance runs, so downloading browsers during validation is unnecessary and can make hosted CI installs slow or flaky.
+
+The verified local binaries are:
+
+```text
+ts-node
+tsc
+esbuild
+playwright
+```
+
 ## Expected CI Exit Behavior
 
 The orchestrator controls pass/fail behavior:

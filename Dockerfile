@@ -10,14 +10,18 @@ WORKDIR /app
 
 ENV CI=true \
     NODE_ENV=development \
-    PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
+    PLAYWRIGHT_BROWSERS_PATH=/ms-playwright \
+    PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 \
+    NPM_VERSION=10.9.2
 
 # Copy k6 into the Playwright/Node image so one container can run the whole system.
 COPY --from=k6bin /usr/bin/k6 /usr/bin/k6
 
 # Install Node dependencies first for better Docker layer caching.
 COPY package*.json ./
-RUN npm ci
+COPY scripts ./scripts
+RUN npm install -g npm@${NPM_VERSION} \
+    && npm run ci:install
 
 COPY . .
 

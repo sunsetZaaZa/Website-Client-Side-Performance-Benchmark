@@ -4,6 +4,8 @@ stages:
 
 variables:
   npm_config_cache: "$CI_PROJECT_DIR/.npm"
+  NPM_VERSION: "10.9.2"
+  PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
 
 cache:
   key:
@@ -14,9 +16,10 @@ cache:
 
 validate:
   stage: validate
-  image: node:20-bookworm
+  image: node:22-bookworm
   before_script:
-    - npm ci --cache .npm --prefer-offline
+    - npm install -g npm@$NPM_VERSION
+    - npm run ci:install -- --cache .npm --prefer-offline
   script:
     - npm run ci:verify
   after_script:

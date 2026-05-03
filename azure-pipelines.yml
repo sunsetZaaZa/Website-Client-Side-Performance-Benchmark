@@ -29,9 +29,12 @@ stages:
           - checkout: self
 
           - task: NodeTool@0
-            displayName: Use Node.js 20.x
+            displayName: Use Node.js 22.x
             inputs:
-              versionSpec: '20.x'
+              versionSpec: '22.x'
+
+          - script: npm install -g npm@10.9.2
+            displayName: Pin npm CLI
 
           - task: Cache@2
             displayName: Cache npm packages
@@ -41,8 +44,10 @@ stages:
                 npm | "$(Agent.OS)"
               path: $(Pipeline.Workspace)/.npm
 
-          - script: npm ci --cache $(Pipeline.Workspace)/.npm --prefer-offline
+          - script: npm run ci:install -- --cache $(Pipeline.Workspace)/.npm --prefer-offline
             displayName: Install dependencies
+            env:
+              PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
 
           - script: npm run ci:verify
             displayName: Validate project
