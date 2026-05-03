@@ -13,7 +13,7 @@
     "report": "ts-node src/reporting/report-generator.ts",
     "clean": "rimraf dist results/run-*",
     "verify:deps": "node scripts/check-local-bins.cjs",
-    "ci:install": "node scripts/ci-install.cjs && npm run verify:deps",
+    "ci:install": "npm run verify:lockfile && node scripts/ci-install.cjs && npm run verify:deps",
     "validate:config": "ts-node src/tools/validate-config.ts",
     "k6:run": "node -e \"require('fs').mkdirSync('./results',{recursive:true})\" && npm run build:k6 && k6 run -e TEST_CONFIG_PATH=./config/test-config.json -e K6_SUMMARY_PATH=./results/k6-summary.json dist/k6/load-test.js",
     "k6:inspect": "npm run build:k6 && node -e \"console.log(require('fs').readFileSync('dist/k6/load-test.js','utf8').slice(0,1200))\"",
@@ -31,7 +31,8 @@
     "ci:verify": "node scripts/ci-verify.cjs",
     "ci:perf": "npm run test:perf",
     "ci:perf:docker": "docker compose run --build --rm perf-runner",
-    "ci:perf:docker:build": "docker compose build perf-runner"
+    "ci:perf:docker:build": "docker compose build perf-runner",
+    "verify:lockfile": "node scripts/check-lockfile-registry.cjs"
   },
   "keywords": [
     "k6",

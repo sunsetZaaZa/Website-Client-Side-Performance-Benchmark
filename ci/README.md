@@ -81,7 +81,7 @@ performance-results
 
 ## Dependency Install Hardening
 
-The validation lanes pin the npm CLI and run `npm run ci:install` instead of a bare `npm ci`. This wrapper sets `PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1`, installs from the lockfile, and verifies that the expected local binaries exist afterward.
+The validation lanes pin the npm CLI and run `npm run ci:install` instead of a bare `npm ci`. This wrapper sets `PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1`, verifies that `package-lock.json` does not point at an internal/private registry, installs from the lockfile through `https://registry.npmjs.org/`, and verifies that the expected local binaries exist afterward.
 
 This is intentional for CI validation because the validation job only needs TypeScript, tests, and the k6 bundle. Browser binaries are supplied by the Docker performance image for full performance runs, so downloading browsers during validation is unnecessary and can make hosted CI installs slow or flaky.
 
@@ -93,6 +93,8 @@ tsc
 esbuild
 playwright
 ```
+
+`package-lock.json` should keep public npm tarball URLs in its `resolved` fields. If a private registry is intentional, set `NPM_LOCKFILE_ALLOWED_HOSTS` to a comma-separated allow-list in the pipeline environment. Otherwise, regenerate or normalize the lockfile before committing.
 
 ## Expected CI Exit Behavior
 
