@@ -571,3 +571,7 @@ CI notes:       ci/README.md
 ```
 
 GitHub performance runs are triggered manually through workflow dispatch. GitLab performance runs can be started manually or by setting `RUN_PERF_TESTS=true`. Azure DevOps performance runs are controlled by the `runPerfTests` pipeline parameter.
+
+## License
+
+This project is licensed under the BSD Zero Clause License. See [`LICENSE`](./LICENSE) for details.
